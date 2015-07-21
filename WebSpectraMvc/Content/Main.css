@@ -1,0 +1,82 @@
+﻿body {
+    margin:25px;
+}
+
+#labelConfidence {
+    float:right;
+}
+
+#fftRegion {
+    width:100%;
+}
+
+#fftCanvas {
+
+    border-color:black;
+    border-width:1px;
+    border-style:solid;
+    width:100%;
+}
+
+#decoderOutput {
+    float:left;
+    width:75%;
+    height:400px;
+}
+
+#modeParameters {
+    float:right;
+    width:24%;
+}
+
+#textAreaDecoderOutput {
+    width:100%;
+    height:100%;
+    resize: none;
+}
+
+#tableModeParameters {
+    height:100%;
+    width:100%;
+}
+
+#tableModeParameters td {
+        vertical-align:top;
+        width:auto;
+}
+
+.parameterTableNameHeader {
+    text-align:center;
+    border-bottom-style:solid;
+    border-bottom-color:black;
+    border-bottom-width:1px;
+}
+
+.parameterTableValueHeader {
+    text-align:center;
+    border-bottom-style:solid;
+    border-bottom-color:black;
+    border-bottom-width:1px;
+}
+
+
+.parameterName {
+    width:100%;
+    margin:5px;
+}
+
+.parameterInput {
+    width:100%;
+}
+.parameterSelect {
+    width:100%;
+}
+
+.parameterCheckboxLabel {
+    align-self:center;
+}
+
+
+
+
+

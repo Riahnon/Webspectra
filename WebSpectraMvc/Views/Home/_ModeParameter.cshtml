@@ -1,0 +1,68 @@
+﻿@model wcm.wspectra.decoders.IParameter
+@using wcm.wspectra.metadata
+@using System.ComponentModel
+@using System.Collections
+@using System.Reflection
+@using WebSpectraMvc.Views
+
+@{
+
+    if (Model.RawValue != null && Model.RawValue.GetType().IsEnum)
+    {
+        //If it's an Flags enum
+        if (Model.RawValue.GetType().IsDefined(typeof(FlagsAttribute), false))
+        {
+            <form id="@Model.Name">
+            @{
+                int lValue = (int)Model.RawValue;
+                var lFlags = Enum.GetValues(Model.RawValue.GetType());
+                foreach (var lFlag in lFlags)
+                {
+                    int lFlagValue = (int)lFlag;
+                    var lText = lFlag.GetEnumValueDescription();
+                    var lChecked = (lFlagValue & lValue) != 0;
+                    <label class="parameterCheckboxLabel"><input type="checkbox" name="@Model.Name" id="@lFlag" @(lChecked ? "checked" : "") value="@lFlagValue" data-modeparminput="true" data-action="@Url.Action("SetFlagParamValue")" data-method="post" data-param="@Model.Name">
+                    @lText</label>
+                    <br />
+                }
+            }
+            </form>
+        }
+        else
+        {
+            var lValues = Enum.GetValues(Model.RawValue.GetType());
+            <select id="@Model.Name" name="@Model.Name" data-modeparamdropdown="true" class="parameterSelect" data-action="@Url.Action("SetParamValue")" data-method="post" data-param="@Model.Name">
+            @foreach (var lValue in lValues)
+            {
+                var lText = lValue.GetEnumValueDescription();
+                <option value="@lValue"  @(Model.RawValue.Equals(lValue) ? "selected" : "")>@lText</option>
+            }
+            </select>
+        }
+    }
+    else if (Model.HasValidValues())
+    {
+        <select id="@Model.Name" name="@Model.Name" data-modeparamdropdown="true" class="parameterSelect" data-action="@Url.Action("SetParamValue")" data-method="post" data-param="@Model.Name">
+            @foreach (var lValidValue in Model.GetValidValues())
+            {
+                <option value="@lValidValue"  @(Model.RawValue.Equals(lValidValue) ? "selected" : "")>@lValidValue</option>
+            }
+        </select>
+    }
+    
+    else if (Model.HasValidNamedValues())
+    {
+        <select id="@Model.Name" name="@Model.Name" data-modeparamdropdown="true" class="parameterSelect" data-action="@Url.Action("SetParamValue")" data-method="post" data-param="@Model.Name">
+            @foreach (var lNamedValidValue in Model.GetValidNamedValues())
+            {
+                <option value="@lNamedValidValue.Value" @(Model.RawValue.Equals(lNamedValidValue.Value) ? "selected" : "")>@lNamedValidValue.Key</option>
+            }
+        </select>
+    }
+    
+
+    else
+    {
+        <input type="text" name="@Model.Name" id="@Model.Name" class="parameterInput" value="@Model.RawValue.ToString()" data-modeparminput="true" data-action="@Url.Action("SetParamValue")" data-method="post" data-param="@Model.Name"/>
+    }
+}

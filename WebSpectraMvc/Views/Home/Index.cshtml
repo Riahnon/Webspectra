@@ -1,0 +1,30 @@
+﻿@model wcm.wspectra.decoders.IDecoder
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml"; ;
+}
+<div>
+
+    <label>Mode:&nbsp;</label>
+        <select id="ddlModes" name="ddlModes" data-action="@Url.Action("SetMode")" data-method="post" >
+            @foreach(var lMode in Model.SupportedModes){
+                var lSelected = Model.CurrentMode.Equals(lMode);
+                <option value="@lMode.Name" selected="@lSelected">@lMode.Name</option>
+            }
+        </select>
+    <label  id="labelConfidence"> Confidence 0%</label>
+</div>
+<br />
+<div id="fftRegion">
+   <canvas id="fftCanvas" width="2048" height="300"></canvas>
+</div>
+<br />
+<div>
+    <div  id="decoderOutput" >
+        <textarea id="textAreaDecoderOutput" readonly></textarea>
+    </div>
+    <div id="modeParameters" >
+        @Html.Partial("_ModeParameters", Model.CurrentMode)
+    </div>
+</div>
+
+
