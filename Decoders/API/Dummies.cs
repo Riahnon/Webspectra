@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using wcm.wspectra.decoders;
-using wcm.wspectra.metadata;
+using WebSpectra.MetaData;
 
-namespace wcm.wspectra.decoders
+namespace WebSpectra.Decoders
 {
 	public class DummyDecoder : IDecoder
 	{

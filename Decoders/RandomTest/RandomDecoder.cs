@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace wcm.wspectra.decoders.RandomTest
+namespace WebSpectra.Decoders.RandomTest
 {
     public class RandomDecoder : IDecoder
     {

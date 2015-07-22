@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using wcm.wspectra.decoders.RandomTest;
+using WebSpectra.Decoders.RandomTest;
 
 
-namespace wcm.wspectra.decoders
+namespace WebSpectra.Decoders
 {
 	public class DecoderManager
 	{

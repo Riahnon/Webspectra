@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using wcm.wspectra.metadata;
+using WebSpectra.MetaData;
 
-namespace wcm.wspectra.decoders.RandomTest
+namespace WebSpectra.Decoders.RandomTest
 {
     public class RandomMode : IMode
     {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using wcm.wspectra.metadata;
+using WebSpectra.MetaData;
 
-namespace wcm.wspectra.decoders
+namespace WebSpectra.Decoders
 {
 	public interface IParameter : INotifyPropertyChanged, IMetadataHolder
 	{

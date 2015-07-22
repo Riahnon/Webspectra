@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace wcm.wspectra.metadata
+namespace WebSpectra.MetaData
 {
 	/// <summary>
 	/// Sometimes types cannot be defined at compilation time because they are generated at runtime. For example in a server-client scenario in which

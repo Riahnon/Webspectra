@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using wcm.wspectra.metadata;
+using WebSpectra.MetaData;
 
-namespace wcm.wspectra.decoders.RandomTest
+namespace WebSpectra.Decoders.RandomTest
 {
 	internal abstract class RandomParameterBase : IParameter
 	{

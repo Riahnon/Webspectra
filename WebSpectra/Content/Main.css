@@ -1,0 +1,108 @@
+﻿body {
+    
+}
+#table-base {
+    position:absolute;
+    height:100%;
+    width:100%;
+    top: 0; bottom: 0; left: 0; right: 0;
+    padding:20px;
+}
+    #table-base td {
+        padding:5px;
+    }
+#tr-top {
+    height:20px;
+}
+#div-modeselection {
+    display:inline;
+}
+
+#labelConfidence {
+    float:right;
+}
+
+#tr-fft {
+    width:100%;
+    height:40%;
+}
+
+#canvas-fft {
+    border-color:black;
+    border-width:1px;
+    border-style:solid;
+    width:100%;
+    height:100%;
+}
+
+#tr-bottom {
+    height:50%;
+    margin:auto;
+}
+#div-decoderOutput {
+    display:inline-flexbox;
+    float:left;
+    width:75%;
+    height:100%;
+    margin:auto;
+    bottom:0px;
+}
+
+#textarea-decoderOutput {
+    width:100%;
+    height:100%;
+    resize: none;
+    margin:auto;
+}
+
+#div-modeParameters {
+    float:right;
+    width:24%;
+    height:100%;
+}
+
+#table-modeParameters {
+    height:100%;
+    width:100%;
+}
+
+#table-modeParameters td {
+        vertical-align:top;
+        width:auto;
+}
+
+.parameterTableNameHeader {
+    text-align:center;
+    border-bottom-style:solid;
+    border-bottom-color:black;
+    border-bottom-width:1px;
+}
+
+.parameterTableValueHeader {
+    text-align:center;
+    border-bottom-style:solid;
+    border-bottom-color:black;
+    border-bottom-width:1px;
+}
+
+
+.parameterName {
+    width:100%;
+    margin:5px;
+}
+
+.parameterInput {
+    width:100%;
+}
+.parameterSelect {
+    width:100%;
+}
+
+.parameterCheckboxLabel {
+    align-self:center;
+}
+
+
+
+
+

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace wcm.wspectra.decoders
+namespace WebSpectra.Decoders
 {
 	public interface IMode : INotifyPropertyChanged
 	{

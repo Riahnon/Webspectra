@@ -1,0 +1,23 @@
+﻿@model WebSpectra.Decoders.IMode
+@using WebSpectra.MetaData
+@using WebSpectra.Views
+<table id="table-modeParameters">
+    <thead>
+        <tr>
+            <th class="parameterTableNameHeader">Parameter</th>
+            <th class="parameterTableValueHeader">Value</th>
+        </tr>
+    </thead>
+        
+    @foreach (var lParam in Model.Parameters)
+    {
+        <tr >
+            <td ><label class="parameterName">@lParam.GetDisplayName()</label></td>
+            <td> 
+                @Html.Partial("_ModeParameter", lParam)
+            </td>
+        </tr>
+    }
+</table>
+
+

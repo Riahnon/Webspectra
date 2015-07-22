@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace wcm.wspectra.decoders
+namespace WebSpectra.Decoders
 {
 	public delegate void FFTDataReceivedEventHandler(double[] aData);
 
