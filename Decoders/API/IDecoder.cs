@@ -64,6 +64,11 @@ namespace WebSpectra.Decoders
 			set;
 		}
 
+        /// <summary>
+        /// Confidence of the mode results. Ranges from 0 to 100. Negative values indicate that the mode does not offer confidence information
+        /// </summary>
+        int Confidence { get; }
+
 		/// <summary>
 		/// Whenever a new FFT line is ready, the decoder provides it calling this event handlers. Data consists on a timestamp and a 
 		/// vector of normalized [0,1] X,Y Coordinates

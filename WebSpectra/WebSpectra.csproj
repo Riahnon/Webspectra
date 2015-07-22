@@ -201,6 +201,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Main.css" />
+    <None Include="Properties\PublishProfiles\webspectra2 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\webspectra2 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -246,8 +248,6 @@
     <Content Include="Scripts\webspectra.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <None Include="Properties\PublishProfiles\webspectra - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\webspectra - Web Deploy.pubxml" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -307,7 +307,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>8718</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:58021/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

@@ -107,20 +107,18 @@ namespace WebSpectra
 
 				_SendEvent("modechanged", new { modeurl = GET_MODE_NAME_URL });
 				_SendEvent("paramschanged", new { paramsurl = GET_MODE_PARAMS_URL });
-                _SendEvent("confidence", m_tCurrentMode.Confidence);
 				break;
-
-
+                case "Confidence":
+                    _SendEvent("confidence", Decoder.Confidence);
+                break;
 			}
+
 		}
 
 		private void _OnCurrentModePropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			switch (e.PropertyName)
 			{
-			case "Confidence":
-				_SendEvent("confidence", m_tCurrentMode.Confidence);
-				break;
 			case "Parameters":
 				foreach (var lParam in m_tCurrentModeParameters)
 					lParam.PropertyChanged -= _OnCurrentModeParamPropertyChanged;

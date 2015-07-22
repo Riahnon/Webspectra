@@ -19,10 +19,6 @@ namespace WebSpectra.Decoders
 		string Status { get; }
 
 		/// <summary>
-		/// Confidence of the mode results. Ranges from 0 to 100. Negative values indicate that the mode does not offer confidence information
-		/// </summary>
-		int Confidence { get; }
-		/// <summary>
 		/// Parameters of the mode
 		/// </summary>
 		IEnumerable<IParameter> Parameters { get; }

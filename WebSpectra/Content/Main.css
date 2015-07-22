@@ -1,18 +1,12 @@
-﻿body {
-    
+﻿body, html {
+    width: calc(100% - 25px);
+    height:calc(100% - 25px);
 }
-#table-base {
-    position:absolute;
-    height:100%;
+
+#div-top {
     width:100%;
-    top: 0; bottom: 0; left: 0; right: 0;
-    padding:20px;
-}
-    #table-base td {
-        padding:5px;
-    }
-#tr-top {
-    height:20px;
+    height:30px;
+    padding:10px;
 }
 #div-modeselection {
     display:inline;
@@ -22,9 +16,10 @@
     float:right;
 }
 
-#tr-fft {
+#div-fft {
     width:100%;
-    height:40%;
+    height:calc(50% - 30px);
+    padding:10px
 }
 
 #canvas-fft {
@@ -35,60 +30,67 @@
     height:100%;
 }
 
-#tr-bottom {
-    height:50%;
-    margin:auto;
-}
-#div-decoderOutput {
-    display:inline-flexbox;
-    float:left;
-    width:75%;
-    height:100%;
-    margin:auto;
-    bottom:0px;
-}
-
-#textarea-decoderOutput {
+#div-bottom {
     width:100%;
-    height:100%;
-    resize: none;
-    margin:auto;
+    height:calc(50% - 30px);
+    padding:10px;
 }
 
-#div-modeParameters {
-    float:right;
-    width:24%;
-    height:100%;
+@media all and (min-width:800px) and (orientation: landscape){
+    #textarea-decoderOutput{
+        display:inline;
+        float:left;
+        width:75%;
+        height:100%;
+        resize:none;
+    }
+
+    #div-modeParameters {
+        float: right;
+        width: calc(25% - 10px);
+        height: 100%;
+    }
+    
+}
+@media all and (max-width: 800px), (orientation:portrait) {
+    body, input, select{
+        font-size:xx-large;
+    }
+    #textarea-decoderOutput {
+        display: block;
+        width: 100%;
+        height: 300px;
+        resize: none;
+        font-size:xx-large;
+    }
+
+    #div-modeParameters {
+        display:inline-flexbox;
+    }
 }
 
 #table-modeParameters {
-    height:100%;
     width:100%;
+    padding:5px;
+    margin:auto;
 }
-
 #table-modeParameters td {
-        vertical-align:top;
-        width:auto;
+    vertical-align:top;
+    width:auto;
+    padding-bottom:5px;
 }
 
-.parameterTableNameHeader {
+
+#table-modeParameters th  {
     text-align:center;
     border-bottom-style:solid;
     border-bottom-color:black;
     border-bottom-width:1px;
 }
-
-.parameterTableValueHeader {
-    text-align:center;
-    border-bottom-style:solid;
-    border-bottom-color:black;
-    border-bottom-width:1px;
-}
-
 
 .parameterName {
     width:100%;
-    margin:5px;
+    padding:5px;
 }
 
 .parameterInput {

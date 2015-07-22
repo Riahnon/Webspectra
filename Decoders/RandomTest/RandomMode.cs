@@ -18,7 +18,6 @@ namespace WebSpectra.Decoders.RandomTest
         public event PropertyChangedEventHandler PropertyChanged;
         static object sInstanceCnt = (int)0;
         int m_nInstanceId;
-        int m_nConfidence;
         public RandomMode (Random aRnd)
         {
             lock (sInstanceCnt)
@@ -27,7 +26,7 @@ namespace WebSpectra.Decoders.RandomTest
                 m_nInstanceId = lCnt;
                 sInstanceCnt = (int)lCnt + 1;
             }
-            this.Confidence = aRnd.Next(101);
+            
             this.Parameters = _GenerateParameters(aRnd);
         }
 
@@ -40,12 +39,6 @@ namespace WebSpectra.Decoders.RandomTest
         public string Status
         {
             get { return "ok"; }
-        }
-
-        public int Confidence
-        {
-            get;
-            private set;
         }
 
         public IEnumerable<IParameter> Parameters

@@ -39,13 +39,14 @@ namespace WebSpectra.Decoders.RandomTest
             }
             
             this.SupportedModes = lModes;
+            this.Confidence = 92 + m_tRnd.Next(5);
 
         }
         public bool Start()
         {
             Stop();
             m_boIsStarted = true;
-            m_tFFTTask = Task.Factory.StartNew(_FFTTaskProc);
+            m_tFFTTask = Task.Factory.StartNew(_DecoderTaskProc);
             return true;
         }
 
@@ -90,6 +91,22 @@ namespace WebSpectra.Decoders.RandomTest
             }
         }
 
+        int m_nConfidence;
+        public int Confidence
+        {
+            get { return m_nConfidence; }
+            private set
+            {
+                value = Math.Max(77, value);
+                value = Math.Min(100, value);
+                if (value != m_nConfidence)
+                {
+                    m_nConfidence = value;
+                    _NotifyPropertyChanged("Confidence");
+                }
+            }
+        }
+
         public event FFTDataReceivedEventHandler FFTDataReceived;
 
         public event TextDataReceivedEventHandler TextDataReceived;
@@ -102,14 +119,23 @@ namespace WebSpectra.Decoders.RandomTest
         }
 
 
-        private void _FFTTaskProc()
+        private void _DecoderTaskProc()
         {
             double[] m_tFFTPoints = Enumerable.Repeat<double>(0.5, FFT_POINT_COUNT).ToArray();
-            var lWatch = new Stopwatch();
-            lWatch.Restart();
+            var lWatchFFT = new Stopwatch();
+            var lWatchConfidence = new Stopwatch();
+            lWatchFFT.Restart();
+            lWatchConfidence.Restart();
+            double lConfidenceInterval = m_tRnd.Next(2000) + 700;
             while (m_boIsStarted)
             {
-                if (lWatch.Elapsed.TotalMilliseconds > 50)
+                if (lWatchConfidence.Elapsed.TotalMilliseconds > lConfidenceInterval)
+                {
+                    this.Confidence += m_tRnd.Next(3) - 1;
+                    lConfidenceInterval = m_tRnd.Next(2000) + 700;
+                    lWatchConfidence.Restart();
+                }
+                if (lWatchFFT.Elapsed.TotalMilliseconds > 50)
                 {
                     var lMaxOffset = 0.05;
                     var lMod = m_tRnd.Next(10) + 1;
@@ -133,7 +159,7 @@ namespace WebSpectra.Decoders.RandomTest
                     if(m_nDecoderOutputIdx >= DECODER_OUTPUT.Length)
                         m_nDecoderOutputIdx = 0;
 
-                    lWatch.Restart();
+                    lWatchFFT.Restart();
                 }
                 else
                 {

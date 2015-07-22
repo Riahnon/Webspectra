@@ -2,37 +2,29 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml"; ;
 }
-<table id="table-base">
-    <tr id="tr-top">
-        <td>
-            <div id="div-modeselection">
-                <label id="label-mode">Mode:</label>
-                <select id="ddlModes" name="ddlModes" data-action="@Url.Action("SetMode")" data-method="post" >
-                    @foreach(var lMode in Model.SupportedModes){
-                        var lSelected = Model.CurrentMode.Equals(lMode);
-                        <option value="@lMode.Name" selected="@lSelected">@lMode.Name</option>
-                    }
-                </select>
-            </div>
+<div id="div-top">
+    <div id="div-modeselection">
+        <label id="label-mode">Mode:</label>
+        <select id="ddlModes" name="ddlModes" data-action="@Url.Action("SetMode")" data-method="post" >
+            @foreach (var lMode in Model.SupportedModes)
+            {
+                var lSelected = Model.CurrentMode.Equals(lMode);
+                <option value="@lMode.Name" selected="@lSelected">@lMode.Name</option>
+            }
+        </select>
+    </div>
 
-            <label  id="labelConfidence"> Confidence 0%</label>
-        </td>
-    </tr>
+    <label id="labelConfidence">Confidence 0%</label>
+</div>
 
-    <tr id="tr-fft">
-        <td>
-            <canvas id="canvas-fft" width="2048" height="300"></canvas>
-        </td>
-    </tr>
-    <tr id="tr-bottom">
-        <td>
-            <div  id="div-decoderOutput" >
-                <textarea id="textarea-decoderOutput" readonly></textarea>
-            </div>
-            <div id="div-modeParameters" >
-                @Html.Partial("_ModeParameters", Model.CurrentMode)
-            </div>
-        </td>
-    </tr>
-</table>
+<div id="div-fft">
+    <canvas id="canvas-fft" width="2048" height="300"></canvas>
+</div>
+<div id="div-bottom">
+    <textarea id="textarea-decoderOutput" readonly></textarea>
+    <div id="div-modeParameters">
+        @Html.Partial("_ModeParameters", Model.CurrentMode)
+    </div>
+</div>
+
 

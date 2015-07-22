@@ -65,6 +65,10 @@ namespace WebSpectra.Decoders
 			set { }
 		}
 
+        public int Confidence
+        {
+            get { return 0; }
+        }
 		public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
 		public event FFTDataReceivedEventHandler FFTDataReceived;
