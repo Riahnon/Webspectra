@@ -11,9 +11,14 @@ namespace WebSpectra.Decoders.RandomTest
 {
     public class RandomDecoder : IDecoder
     {
-        const int FFT_POINT_COUNT = 256;
+        
         const int MODE_COUNT_MIN = 50; 
         const int MODE_COUNT_MAX = 150;
+        const int FFT_POINT_COUNT = 256;
+        const int FFT_WAVE_COUNT = 10;
+        const double FFT_UPDATE_INTERVAL = 50;
+        const double FFT_WAVE_MIN_FREQ = 3;
+        const double FFT_WAVE_MAX_FREQ = 50;
         public event PropertyChangedEventHandler PropertyChanged;
         static object sInstanceCnt = (int)0;
         int m_nInstanceId;
@@ -121,6 +126,12 @@ namespace WebSpectra.Decoders.RandomTest
 
         private void _DecoderTaskProc()
         {
+            var lWaves = new List<WaveCalculator>();
+            for (int i=0; i < FFT_WAVE_COUNT; ++i)
+            {
+                var lCalculator = new WaveCalculator((WaveCalculatorFunc)m_tRnd.Next(2), 0, FFT_POINT_COUNT);
+                lWaves.Add(lCalculator);
+            }
             double[] m_tFFTPoints = Enumerable.Repeat<double>(0.5, FFT_POINT_COUNT).ToArray();
             var lWatchFFT = new Stopwatch();
             var lWatchConfidence = new Stopwatch();
@@ -135,20 +146,25 @@ namespace WebSpectra.Decoders.RandomTest
                     lConfidenceInterval = m_tRnd.Next(2000) + 700;
                     lWatchConfidence.Restart();
                 }
-                if (lWatchFFT.Elapsed.TotalMilliseconds > 50)
+                //Time to calculate an FFT
+                if (lWatchFFT.Elapsed.TotalMilliseconds > FFT_UPDATE_INTERVAL)
                 {
-                    var lMaxOffset = 0.05;
-                    var lMod = m_tRnd.Next(10) + 1;
-                    for (int i = 0; i < m_tFFTPoints.Length; i++)
+                    //Values are calculatd
+                    foreach (var lWave in lWaves)
                     {
-                        if (i % lMod == 0)
-                        {
-                            var lOffsetY = lMaxOffset * (m_tRnd.NextDouble() - 0.5);
-                            if (m_tFFTPoints[i] < 0.03 || m_tFFTPoints[i] > 0.097)
-                                lOffsetY *= -1;
-                            m_tFFTPoints[i] += lOffsetY;
-                        }
+                        var lFreq = FFT_WAVE_MIN_FREQ + m_tRnd.NextDouble() * (FFT_WAVE_MAX_FREQ - FFT_WAVE_MIN_FREQ);
+                        lWave.Frequency = lFreq;
+                        lWave.Calc(m_tRnd.NextDouble());
                     }
+                    //Values are normalized in [-1,1] interval
+                    for (int i=0; i < m_tFFTPoints.Length; ++i)
+                        m_tFFTPoints[i] = lWaves.Select(aWave => aWave.Values[i]).Sum();
+                    var lMax = m_tFFTPoints.Max();
+                    var lMin = m_tFFTPoints.Min();
+                    var lRange = lMax - lMin;
+                    //And then scaled to [0,1] interval
+                    m_tFFTPoints = m_tFFTPoints.Select(aPoint => 0.5*(1 + aPoint / lRange)).ToArray();
+                    
                     if (FFTDataReceived != null)
                         FFTDataReceived(m_tFFTPoints);
 

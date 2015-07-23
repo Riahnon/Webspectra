@@ -201,8 +201,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Main.css" />
-    <None Include="Properties\PublishProfiles\webspectra2 - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\webspectra2 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\webspectra - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\webspectra - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />

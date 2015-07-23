@@ -57,6 +57,7 @@
     <Compile Include="API\IMode.cs" />
     <Compile Include="API\IModeParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomTest\WaveCalculator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
