@@ -2,7 +2,8 @@
 var Ctx2D;
 var TextOutput;
 var ConfidenceLabel;
-var SSEStream;
+var ExplanationHeader;
+var Explanation;
 function onMessage(e) { }
 
 function onFFTData(aData) {
@@ -64,16 +65,6 @@ function onParamValueChanged(aData) {
     });
 }
 
-function onError(e) {
-    if (e.readyState != EventSource.CLOSED) {
-        this.close();  //here, `this` refers to `SSEStream`
-        alert("Error");
-    }
-    else {
-        alert("Event source closed");
-    }
-}
-
 function resetChangeEvents(context) {
     $("input[data-modeparminput='true'][type='text']", context).change(setParameterValue);
     $("input[data-modeparminput='true'][type='checkbox']", context).change(setFlagParameterValue);
@@ -125,16 +116,7 @@ var setFlagParameterValue = function () {
         cache: "false",
         data: { param: $input.attr("data-param"), value: getFlagsValue($input.attr("name")) }
     };
-    $.ajax(options).done(function (data) {
-        /*//This write action may return a response if the sent parameter value is not valid. This response will replace the paramter value in the client and set it to the current one
-        var $target = $("#" + $input.attr("name"));
-        if (data) {
-            var $lNewHTML = $(data);
-            $target.replaceWith($lNewHTML);
-            $lNewHTML.effect("highlight");
-            resetChangeEvents($lNewHTML.html);
-        }*/
-    });
+    $.ajax(options);
 };
 
 var setParameterValue = function () {
@@ -145,16 +127,7 @@ var setParameterValue = function () {
         cache: "false",
         data: { param: $input.attr("data-param"), value: $input.val() }
     };
-    $.ajax(options).done(function (data) {
-        //This write action may return a response if the sent parameter value is not valid. This response will replace the paramter value in the client and set it to the current one
-        /*var $target = $("#" + $input.attr("id"));
-        if (data) {
-            var $lNewHTML = $(data);
-            $target.replaceWith($lNewHTML);
-            $lNewHTML.effect("highlight");
-            resetChangeEvents($lNewHTML.html);
-        }*/
-    });
+    $.ajax(options);
 };
 
 var setMode = function () {
@@ -166,35 +139,37 @@ var setMode = function () {
         type: $select.attr("data-method"),
         data: { mode: $lSelectedMode }
     };
-    $.ajax(options).done( /*function (data, textStatus, jqXHR) {
-
-    }*/);
+    $.ajax(options);
 
     return false;
 };
 
-function startSSEConnection() {
-    SSEStream = new EventSource("/api/EventStream");
-    SSEStream.onmessage = onMessage;
-    SSEStream.onerror = onError;
-    SSEStream.addEventListener('fft', onFFTData);
-    SSEStream.addEventListener('text', onTextData);
-    SSEStream.addEventListener('confidence', onConfidenceChanged);
-    SSEStream.addEventListener('modechanged', onModeChanged);
-    SSEStream.addEventListener('paramschanged', onParamsChanged);
-    SSEStream.addEventListener('paramvaluechanged', onParamValueChanged);
+function OnBodyClicked(e) {
+    Explanation.className = Explanation.className.replace("visibleExplanation", "");
+    document.body.removeEventListener("click", OnBodyClicked, true);
+    e.stopPropagation();
 }
 
+
+
 $(document).ready(function () {
-    
+    ExplanationHeader = document.getElementById("explanationHeader");
+    Explanation = document.getElementById("explanation");
     Canvas = document.getElementById('canvas-fft');
     Ctx2D = Canvas.getContext('2d');
     TextOutput = document.getElementById('textarea-decoderOutput');
     ConfidenceLabel = document.getElementById('labelConfidence');
 
+    ExplanationHeader.addEventListener("click", function () {
+        var ExplanationVisible = Explanation.className.indexOf("visibleExplanation") != -1;
+        if (!ExplanationVisible) {
+            Explanation.className += "visibleExplanation";
+            document.body.addEventListener("click", OnBodyClicked, true);
+        }
+    });
+
     var decoderHub = $.connection.decoderHub;
 
-    /*startSSEConnection();*/
     window.addEventListener('resize', resizeCanvas, false);
     resetChangeEvents();
     $("select[id='ddlModes']").change(setMode);

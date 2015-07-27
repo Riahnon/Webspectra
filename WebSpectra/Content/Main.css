@@ -1,18 +1,46 @@
 ﻿body, html {
-    width: calc(100% - 24px);
-    height:calc(100% - 24px);
+    width: 100%;
+    height:100%;
+    margin: 0;
+    padding:0;
 }
 
-body {
-    padding:12px;
+header {
+    display:block;
+    background-color: #eeeeee;
+    border-bottom: 1px black solid; 
+    margin-bottom:10px;
+    }
+    header > h2 {
+        cursor:pointer;
+        margin:0;
+        padding:5px;
+    }
+
+    header > div {
+        display: none;
+        padding:0;
+        height:auto;
+    }
+
+
+.visibleExplanation {
+    display: block;
+    width:calc(100% - 50px);
+    margin-left: 50px;
+    padding-bottom: 20px;
 }
 
 
 
+body > div {
+    padding-left:10px;
+    padding-right:10px;
+    width:calc(100% - 20px);
+}
 #div-top {
-    width:100%;
-    /*height:30px;*/
     padding-bottom:10px;
+
 }
 #div-modeselection {
     display:inline;
@@ -23,9 +51,7 @@ body {
 }
 
 #div-fft {
-    
-    width:100%;
-    height:calc(50% - 35px);
+    height:calc(50% - 65px);
     padding-top:10px;
     padding-bottom:10px;
 }
@@ -39,9 +65,7 @@ body {
 }
 
 #div-bottom {
-    
-    width: 100%;
-    height:calc(50% - 35px);
+    height:calc(50% - 65px);
     padding-top:10px;
     padding-bottom:10px;
 }

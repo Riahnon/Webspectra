@@ -2,6 +2,19 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml"; ;
 }
+<header id="explanationHeader">
+    <h2>About - What is this</h2>
+    <div id="explanation">
+       <h3>This is a simple simulation of a web based radio decoder application.</h3>
+        <ul>
+            <li>A decoder consists normally on set of possible radio modes to process a signal input, each of the modes has a set of parameters that configure how the mode behaves.</li>
+            <li>Since this is just a simulation, there's no real demodulator; the signal, the modes and its parameters are randomly generated at the server side. </li>
+            <li>Ideally, a real application could have several decoders, user accounts and user account based access to different decoders and features. </li>
+            <li>In this simple simulation, all users browsing the web share the same decoder, that means that changes made by one visitor (mode or parameters) are propagated and visible in real time to the rest of the users.</li>
+            <li>The sole purpose of this site is the author to experiment with ASP.NET MVC and web programming.</li>
+        </ul>
+    </div>
+</header>
 <div id="div-top">
     <div id="div-modeselection">
         <label id="label-mode">Mode:</label>
