@@ -89,15 +89,18 @@ body > div {
     
 }
 @media all and (max-width: 800px), (orientation:portrait) {
-    body, input, select{
-        font-size:xx-large;
+    body, input, select, label{
+        font-size:1.3em;
+    }
+    h1, h2 {
+        font-size:1em;
     }
     #textarea-decoderOutput {
         display: block;
         width: 100%;
         height: 300px;
         resize: none;
-        font-size:xx-large;
+        font-size:1.5em;
     }
 
     #div-modeParameters {

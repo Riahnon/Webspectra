@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 using WebSpectra.Decoders;
 
 namespace WebSpectra.Controllers
@@ -16,6 +17,7 @@ namespace WebSpectra.Controllers
 		}
 
 		[HttpGet]
+        [OutputCache(NoStore = true, Duration = 0, Location = OutputCacheLocation.None, VaryByParam = "*")]
 		public ActionResult GetCurrentModeName()
 		{
 			if (MvcApplication.Decoder.CurrentMode != null)
@@ -25,6 +27,7 @@ namespace WebSpectra.Controllers
 		}
 
 		[HttpGet]
+        [OutputCache(NoStore = true, Duration = 0, Location = OutputCacheLocation.None, VaryByParam = "*")]
 		public ActionResult GetCurrentModeParams()
 		{
 			if (MvcApplication.Decoder.CurrentMode != null)
@@ -34,6 +37,7 @@ namespace WebSpectra.Controllers
 		}
 
 		[HttpGet]
+        [OutputCache(NoStore = true, Duration = 0, Location = OutputCacheLocation.None, VaryByParam = "*")]
 		public ActionResult GetCurrentModeParam(string paramname = null)
 		{
 			if (MvcApplication.Decoder.CurrentMode != null)
