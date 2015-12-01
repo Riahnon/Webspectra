@@ -1,43 +1,67 @@
-﻿@model WebSpectra.Decoders.IDecoder
-@{
-    Layout = "~/Views/Shared/_Layout.cshtml"; ;
-}
-<header id="explanationHeader">
-    <h2>About - What is this</h2>
-    <div id="explanation">
-       <h3>This is a simple simulation of a web based radio decoder application.</h3>
-        <ul>
-            <li>A decoder consists normally on set of possible radio modes to process a signal input, each of the modes has a set of parameters that configure how the mode behaves.</li>
-            <li>Since this is just a simulation, there's no real demodulator; the signal, the modes and its parameters are randomly generated at the server side. </li>
-            <li>Ideally, a real application could have several decoders, user accounts and user account based access to different decoders and features. </li>
-            <li>In this simple simulation, all users browsing the web share the same decoder, that means that changes made by one visitor (mode or parameters) are propagated and visible in real time to the rest of the users.</li>
-            <li>The sole purpose of this site is the author to experiment with ASP.NET MVC and web programming.</li>
-        </ul>
-    </div>
-</header>
-<div id="div-top">
-    <div id="div-modeselection">
-        <label id="label-mode">Mode:</label>
-        <select id="ddlModes" name="ddlModes" data-action="@Url.Action("SetMode")" data-method="post" >
-            @foreach (var lMode in Model.SupportedModes)
-            {
-                var lSelected = Model.CurrentMode.Equals(lMode);
-                <option value="@lMode.Name" selected="@lSelected">@lMode.Name</option>
-            }
+﻿<div id="rowTop" class="row">
+    <div class="col-md-3">
+        Mode: 
+        <select id="select-currentmode" data-bind="options: supportedModes, optionsText: 'name', value: currentMode">
         </select>
     </div>
-
-    <label id="labelConfidence">Confidence 0%</label>
-</div>
-
-<div id="div-fft">
-    <canvas id="canvas-fft" width="2048" height="300"></canvas>
-</div>
-<div id="div-bottom">
-    <textarea id="textarea-decoderOutput" readonly></textarea>
-    <div id="div-modeParameters">
-        @Html.Partial("_ModeParameters", Model.CurrentMode)
+    <div class="col-md-7">
+        &nbsp;
+    </div>
+    <div class="col-md-2">
+        <div id="divConfidence">
+            Confidence:
+            <label data-bind="text: confidence"></label>%
+        </div>
     </div>
 </div>
+<div class="row" >
+    <div class="col-md-12">
+        <canvas id="canvasFFT"  width="2048" height="400"></canvas>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-7">
+        <textarea id="textareaOutput"></textarea>
+    </div>
+    <div class="col-md-5">
+        <div id="divParameters">
+            <h2>Parameters</h2>
+            <ul id="ul-parameters" data-bind="template: { name: getparametertype, foreach: currentMode().parameters }">
+                @*<li>
+                    <span data-bind="text: name"> </span>
+                    :&nbsp;
+                    <input type="text" data-bind="text: value, visible: type=='text'"/>
+                    <select type="text" data-bind="value: value, options: validvalues, visible: type=='select'" />
+                    <select type="text" data-bind="value: value, options: validnamedvalues, visible: type=='namedselect'" />
+                </li>*@
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="raw">
+    <li class="parameter-raw">
+        <span data-bind="text: name"> </span>
+        <input type="text" data-bind="text: value" />
+    </li>
+</script>
+<script type="text/html" id="dropdown">
+    <li class="parameter-validvalues">
+        <span data-bind="text: name"> </span>
+        <select type="text" data-bind="value: value, options: validvalues" />
+    </li>
+</script>
+<script type="text/html" id="nameddropdown">
+    <li class="parameter-validnamedvalues">
+        <span data-bind="text: name"> </span>
+        <select type="text" data-bind="value: value, options: validnamedvalues, optionsText: 'Key', optionsValue:'Value'" />
+    </li>
+</script>
 
+@section scripts {
+    <script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
+    <script src="~/SignalR/hubs"></script>
+    <script src="~/Scripts/knockout-3.3.0.js"></script>
+    <script src="~/Scripts/webspectra.js"></script>
+    
+} 
 

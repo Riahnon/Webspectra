@@ -1,0 +1,37 @@
+﻿#rowTop{
+    margin-top:75px;
+}
+
+#divConfidence{
+   text-align:right;
+}
+#canvasFFT {
+    width:100%;
+    height:400px;
+}
+
+
+#textareaOutput {
+    width:100%;
+    height:400px;
+}
+
+#divParameters{
+    width:100%;
+    height:400px;
+}
+
+#ul-parameters {
+    list-style:none;
+    padding-left:5px;
+}
+#ul-parameters li {
+    margin:3px;
+}
+.parameter-raw span, .parameter-validvalues span, .parameter-validnamedvalues span{
+    
+}
+
+.parameter-raw input, .parameter-validvalues select, .parameter-validnamedvalues select  {
+    width:250px;
+}

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using WebSpectra.MetaData;
 
 namespace WebSpectra.Decoders.RandomTest
 {
@@ -18,7 +17,7 @@ namespace WebSpectra.Decoders.RandomTest
         public event PropertyChangedEventHandler PropertyChanged;
         static object sInstanceCnt = (int)0;
         int m_nInstanceId;
-        public RandomMode (Random aRnd)
+        public RandomMode(Random aRnd)
         {
             lock (sInstanceCnt)
             {
@@ -26,7 +25,7 @@ namespace WebSpectra.Decoders.RandomTest
                 m_nInstanceId = lCnt;
                 sInstanceCnt = (int)lCnt + 1;
             }
-            
+
             this.Parameters = _GenerateParameters(aRnd);
         }
 
@@ -49,61 +48,105 @@ namespace WebSpectra.Decoders.RandomTest
 
         public IParameter this[string aParamName]
         {
-            get 
+            get
             {
                 var lResult = this.Parameters.FirstOrDefault((aParam) => aParam.Name == aParamName);
-                return lResult; 
+                return lResult;
             }
         }
 
         private List<IParameter> _GenerateParameters(Random aRnd)
         {
             var lResult = new List<IParameter>();
-            var lParamCount = aRnd.Next(PARAMETER_COUNT_MAX-PARAMETER_COUNT_MIN) + PARAMETER_COUNT_MIN;
+            var lParamCount = aRnd.Next(PARAMETER_COUNT_MAX - PARAMETER_COUNT_MIN) + PARAMETER_COUNT_MIN;
             for (int i = 0; i < lParamCount; ++i)
             {
                 //Value types: int, float, string, ValueList, NamedValueList
-                switch (aRnd.Next(5))
+                switch (aRnd.Next(4))
                 {
                     case 0:
+
+                        switch (aRnd.Next(3))
                         {
-                            lResult.Add(new RandomParameter<int>(aRnd.Next(1000)));
-                            break;
+                            case 0:
+                                lResult.Add(new RandomParameter<int>(aRnd.Next(1000)));
+                                break;
+                            case 1:
+                                lResult.Add(new RandomParameter<float>(aRnd.Next(1000)));
+                                break;
+                            case 2:
+                                lResult.Add(new RandomParameter<string>(_GenerateRandomString(3 + aRnd.Next(10))));
+                                break;
                         }
+                        break;
+
                     case 1:
+
+                        switch (aRnd.Next(2))
                         {
-                            lResult.Add(new RandomParameter<double>(aRnd.NextDouble() * 5000));
+                            case 0:
+                                lResult.Add(new RandomRangedParameter<int>(10 + aRnd.Next(1000), 10, 1010));
+                                break;
+                            case 1:
+                                lResult.Add(new RandomRangedParameter<float>(10 + aRnd.Next(1000), 10, 1010));
+                                break;
                         }
+
                         break;
                     case 2:
-                        lResult.Add(new RandomParameter<string>(_GenerateRandomString(aRnd.Next(VALUESTRING_LENGTH_MAX - VALUESTRING_LENGTH_MIN) + VALUESTRING_LENGTH_MIN, aRnd)));
+                        switch (aRnd.Next(3))
+                        {
+                            case 0:
+                                {
+                                    var lValidValues = Enumerable.Range(0, 2 + aRnd.Next(10)).Select(aItem => (int)aRnd.Next(1000)).ToArray();
+                                    lResult.Add(new RandomSelectionParameter<int>(lValidValues[0], lValidValues));
+                                }
+
+                                break;
+                            case 1:
+                                {
+                                    var lValidValues = Enumerable.Range(0, 2+ aRnd.Next(10)).Select(aItem => (float)aRnd.Next(1000)).ToArray();
+                                    lResult.Add(new RandomSelectionParameter<float>(lValidValues[0], lValidValues));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    var lValidValues = Enumerable.Range(0, 2+ aRnd.Next(10)).Select(aItem => _GenerateRandomString(3 + aRnd.Next(10))).ToArray();
+                                    lResult.Add(new RandomSelectionParameter<string>(lValidValues[0], lValidValues));
+                                }
+                                break;
+                        }
                         break;
                     case 3:
+                        switch (aRnd.Next(3))
                         {
-                            var lValidValuesCount = aRnd.Next(VALUE_COUNT_MAX-VALUE_COUNT_MIN) + VALUE_COUNT_MIN;
-                            var lValidValues = new List<int>();
-                            for( int j=0;j<lValidValuesCount; ++j)
-                                lValidValues.Add(aRnd.Next(10000));
+                            case 0:
+                                {
+                                    var lValidNamedValues = Enumerable.Range(0, 2+ aRnd.Next(10)).Select(aItem => (int)aRnd.Next(1000))
+                                        .Select(aValue => new KeyValuePair<string, int>(_GenerateRandomString(3 + aRnd.Next(10)), aValue))
+                                        .ToArray();
+                                    lResult.Add(new RandomNamedSelectionParameter<int>(lValidNamedValues[0].Value, lValidNamedValues));
+                                }
 
-                            var lParameter = new RandomParameter<int>(lValidValues[0]);
-                            lParameter.SetMetadataRaw(MetadataIDs<int>.VALID_VALUES, lValidValues);
-                            lResult.Add(lParameter);
+                                break;
+                            case 1:
+                                {
+                                    var lValidNamedValues = Enumerable.Range(0, 2 +aRnd.Next(10)).Select(aItem => (float)aRnd.Next(1000))
+                                        .Select(aValue => new KeyValuePair<string, float>(_GenerateRandomString(3 + aRnd.Next(10)), aValue))
+                                        .ToArray();
+                                    lResult.Add(new RandomNamedSelectionParameter<float>(lValidNamedValues[0].Value, lValidNamedValues));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    var lValidNamedValues = Enumerable.Range(0, 2 + aRnd.Next(10)).Select(aItem => (float)aRnd.Next(1000))
+                                       .Select(aValue => new KeyValuePair<string, string>(_GenerateRandomString(3 + aRnd.Next(10)), _GenerateRandomString(3 + aRnd.Next(10))))
+                                       .ToArray();
+                                    lResult.Add(new RandomNamedSelectionParameter<string>(lValidNamedValues[0].Value, lValidNamedValues));
+                                }
+                                break;
                         }
                         break;
-                    case 4:
-                        {
-                            var lValidValuesCount = aRnd.Next(VALUE_COUNT_MAX - VALUE_COUNT_MIN) + VALUE_COUNT_MIN;
-                            var lValidNamedValues = new List<KeyValuePair<string,int>>();
-                            for (int j = 0; j < lValidValuesCount; ++j)
-                                lValidNamedValues.Add(new KeyValuePair<string,int>("Value" + j.ToString(), aRnd.Next(10000)));
-
-                            var lParameter = new RandomParameter<int>(lValidNamedValues[0].Value);
-                            lParameter.SetMetadataRaw(MetadataIDs<int>.VALID_NAMED_VALUES, lValidNamedValues);
-                            lResult.Add(lParameter);
-                        }
-                        break;
-                    
-
                 }
 
             }

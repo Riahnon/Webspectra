@@ -3,14 +3,29 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using WebSpectra.MetaData;
 
 namespace WebSpectra.Decoders
 {
-	public interface IParameter : INotifyPropertyChanged, IMetadataHolder
+	public interface IParameter : INotifyPropertyChanged
 	{
 		string Name { get; }
 
-		object RawValue { get; set; }
+		object Value { get; set; }
 	}
+
+    public interface IRangedParameter : IParameter
+    {
+        object Max { get; }
+        object Min { get; }
+    }
+
+    public interface ISelectionParameter : IParameter
+    {
+        object[] ValidValues { get; }
+    }
+
+    public interface INamedSelectionParameter : IParameter
+    {
+        KeyValuePair<string,object>[] ValidNamedValues { get; }
+    }
 }

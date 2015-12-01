@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using WebSpectra.MetaData;
 
 namespace WebSpectra.Decoders.RandomTest
 {
@@ -34,77 +33,10 @@ namespace WebSpectra.Decoders.RandomTest
 			private set;
 		}
 
-		public abstract object RawValue
+		public abstract object Value
 		{
 			get;
 			set;
-		}
-
-		public abstract void SetRawValue(object aValue);
-
-        
-		public IEnumerable<KeyValuePair<string, object>> MetadatasRaw
-		{
-			get { return m_tMetaDatas; }
-		}
-
-
-		public bool HasMetadataRaw(MetadataID aId)
-		{
-			return m_tMetaDatas.ContainsKey(aId);
-		}
-
-		public bool TryGetMetadataRaw(MetadataID aId, out object aProperty)
-		{
-			return m_tMetaDatas.TryGetValue(aId, out aProperty);
-		}
-
-		public object GetMetaDataRaw(MetadataID aId)
-		{
-			return m_tMetaDatas[aId];
-		}
-
-		public void SetMetadataRaw(MetadataID aId, object aMetaData)
-		{
-			m_tMetaDatas[aId] = aMetaData;
-		}
-
-		public void RemoveMetadataRaw(MetadataID aId)
-		{
-			m_tMetaDatas.Remove(aId);
-		}
-
-		public bool HasMetadata<T>(MetadataID<T> aId)
-		{
-			object lDummy;
-			return m_tMetaDatas.TryGetValue(aId.ToString(), out lDummy) && lDummy is T;
-		}
-
-		public bool TryGetMetadata<T>(MetadataID<T> aId, out T aProperty)
-		{
-			aProperty = default(T);
-			object lDummy;
-			if (m_tMetaDatas.TryGetValue(aId.ToString(), out lDummy) && lDummy is T)
-			{
-				aProperty = (T)lDummy;
-				return true;
-			}
-			return false;
-		}
-
-		public T GetMetadata<T>(MetadataID<T> aId)
-		{
-			return (T)m_tMetaDatas[aId.ToString()];
-		}
-
-		public void SetMetadata<T>(MetadataID<T> aId, T aMetaData)
-		{
-			SetMetadataRaw(aId.ToString(), aMetaData);
-		}
-
-		public void RemoveMetadata<T>(MetadataID<T> aId)
-		{
-			m_tMetaDatas.Remove(aId.ToString());
 		}
 
 		protected void _NotifyPropertyChanged(string aPropertyName)
@@ -116,7 +48,7 @@ namespace WebSpectra.Decoders.RandomTest
 
 		public override string ToString()
 		{
-			return this.Name + " = " + this.RawValue;
+			return this.Name + " = " + this.Value;
 		}
 	}
 }
