@@ -14,7 +14,57 @@
                 return "dropdown";
 
             return "raw";
+        },
+        parametersubscriptions : []
+    }
+
+    function getSupportedModesView (aSupportedModes)
+    {
+        var lSupportedModes = [];
+        for (var i = 0; i < aSupportedModes.length; ++i) {
+            lSupportedModes.push(getModeView(aSupportedModes[i]));
         }
+        return lSupportedModes;
+    }
+    function getModeView(aMode)
+    {
+        var lMode = {
+            name: aMode.name,
+            parameters: ko.observableArray(getModeParametersView(aMode.parameters))
+        };
+        return lMode;
+    }
+
+    function getModeParametersView(aParameters)
+    {
+        var lParameters = [];
+        for(var i=0; i<aParameters.length; ++i)
+        {
+            lParameters.push(getModeParameterView(aParameters[i]));
+        }
+        return lParameters;
+    }
+    function getModeParameterView(aParameter)
+    {
+        var lParam = {
+            name : aParameter.name,
+            type : aParameter.type,
+            value: ko.observable(aParameter.value)
+        };
+
+        if(aParameter.validvalues)
+            lParam.validvalues = aParameter.validvalues;
+
+        if(aParameter.validnamedvalues)
+            lParam.validnamedvalues = aParameter.validnamedvalues;
+
+        if(aParameter.min)
+            lParam.min = aParameter.min;
+
+        if(aParameter.max)
+            lParam.max = aParameter.max;
+
+        return lParam;
     }
     var lHub = $.connection.webSpecrtaHub;
     var lCanvas = document.getElementById('canvasFFT');
@@ -54,16 +104,7 @@
 
     function onCurrentModeChanged(aNewMode) {
         lHub.server.setCurrentMode(aNewMode.name);
-        //if(lViewModel.currentMode())
-        //{
-        //    var ldivParams = $("#divParameters");
-        //    var lHtmlStr = "";
-        //    for (var i = 0; i < aNewMode.parameters.length; ++i)
-        //    {
-        //        lHtmlStr += aNewMode.parameters[i].name + "</br>";
-        //    }
-        //    ldivParams.html(lHtmlStr);
-        //}
+        subscribeParameterValueChange(aNewMode);
     }
 
     function setCurrentMode(aModeName)
@@ -76,13 +117,32 @@
             var lMode = lViewModel.supportedModes()[i];
             if (lMode.name == aModeName) {
                 lViewModel.currentMode(lMode);
+                subscribeParameterValueChange(lMode);
                 break;
             }
         }
     }
 
+    function subscribeParameterValueChange(aModeView)
+    {
+        for (var i = 0; i < lViewModel.parametersubscriptions.length; ++i)
+            lViewModel.parametersubscriptions[i].dispose();
+
+        lViewModel.parametersubscriptions = [];
+        var lModeParametersView = aModeView.parameters();
+        for (var i = 0; i < lModeParametersView.length; ++i)
+        {
+            var lParam = lModeParametersView[i];
+            lViewModel.parametersubscriptions.push(lParam.value.subscribe(onParameterValueChanged));
+        }
+    }
+
+    function onParameterValueChanged(aChange) {
+        console.log("Parameter value changed");
+    }
+
     function setSupportedModes(aSupportedModes) {
-        lViewModel.supportedModes(aSupportedModes);
+        lViewModel.supportedModes(getSupportedModesView(aSupportedModes));
     }
 
     function drawFFT(fftValues) {

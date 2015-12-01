@@ -1,7 +1,7 @@
 ﻿<div id="rowTop" class="row">
     <div class="col-md-3">
         Mode: 
-        <select id="select-currentmode" data-bind="options: supportedModes, optionsText: 'name', value: currentMode">
+        <select id="select-currentmode" data-bind="options: supportedModes(), optionsText: 'name', value: currentMode">
         </select>
     </div>
     <div class="col-md-7">
@@ -19,6 +19,8 @@
         <canvas id="canvasFFT"  width="2048" height="400"></canvas>
     </div>
 </div>
+
+ 
 <div class="row">
     <div class="col-md-7">
         <textarea id="textareaOutput"></textarea>
@@ -26,14 +28,7 @@
     <div class="col-md-5">
         <div id="divParameters">
             <h2>Parameters</h2>
-            <ul id="ul-parameters" data-bind="template: { name: getparametertype, foreach: currentMode().parameters }">
-                @*<li>
-                    <span data-bind="text: name"> </span>
-                    :&nbsp;
-                    <input type="text" data-bind="text: value, visible: type=='text'"/>
-                    <select type="text" data-bind="value: value, options: validvalues, visible: type=='select'" />
-                    <select type="text" data-bind="value: value, options: validnamedvalues, visible: type=='namedselect'" />
-                </li>*@
+            <ul id="ul-parameters" data-bind="template: { name: getparametertype, foreach: currentMode().parameters() }">
             </ul>
         </div>
     </div>
@@ -41,7 +36,7 @@
 <script type="text/html" id="raw">
     <li class="parameter-raw">
         <span data-bind="text: name"> </span>
-        <input type="text" data-bind="text: value" />
+        <input type="text" data-bind="value: value" />
     </li>
 </script>
 <script type="text/html" id="dropdown">
@@ -62,6 +57,6 @@
     <script src="~/SignalR/hubs"></script>
     <script src="~/Scripts/knockout-3.3.0.js"></script>
     <script src="~/Scripts/webspectra.js"></script>
-    
-} 
+
+}
 
