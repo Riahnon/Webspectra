@@ -29,6 +29,19 @@
         <div id="divParameters">
             <h2>Parameters</h2>
             <ul id="ul-parameters" data-bind="template: { name: getparametertype, foreach: currentMode().parameters() }">
+            @*<ul id="ul-parameters" data-bind="template: { foreach: currentMode().parameters() }">
+                <li class="parameter-validnamedvalues" data-bind="template: {if:type=='namedselect'}">
+                    <span data-bind="text: name"> </span>
+                    <select type="text" data-bind="value: value, options: validnamedvalues, optionsText: 'Key', optionsValue:'Value'" />
+                </li>
+                <li class="parameter-validvalues" data-bind="template: {if:type=='select'}">
+                    <span data-bind="text: name"> </span>
+                    <select type="text" data-bind="value: value, options: validvalues" />
+                </li>
+                <li class="parameter-raw" data-bind="template: {if:type=='text'}">
+                    <span data-bind="text: name"> </span>
+                    <input type="text" data-bind="value: value" />
+                </li>*@
             </ul>
         </div>
     </div>

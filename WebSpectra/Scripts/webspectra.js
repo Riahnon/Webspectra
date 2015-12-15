@@ -44,6 +44,7 @@
         }
         return lParameters;
     }
+
     function getModeParameterView(aParameter)
     {
         var lParam = {
@@ -66,11 +67,14 @@
 
         return lParam;
     }
+
     var lHub = $.connection.webSpecrtaHub;
     var lCanvas = document.getElementById('canvasFFT');
     var lCtx2D = lCanvas.getContext('2d');
     var lTextOutput = document.getElementById('textareaOutput');
     var lIgnoreChange = false;
+    var lGetSupportedModesDeferred = $.Deferred();
+    var lGetCurrentModeNameDeferred = $.Deferred();
     lHub.client.updateText = updateText;
     lHub.client.updateFFT = updateFFT;
     lHub.client.updateConfidence = updateConfidence;
@@ -78,10 +82,22 @@
     lHub.client.setSupportedModes = setSupportedModes;
     lViewModel.supportedModeParams = {};
     $.connection.hub.start().done(function () {
-        lHub.server.getSupportedModes().done(function () {
+        
+        lHub.server.getSupportedModes();
+        lGetSupportedModesDeferred.promise().done(function () {
+            //by default the first mode will be considered to be set
+            if (lViewModel.supportedModes().length)
+            {
+                var lMode = lViewModel.supportedModes()[0];
+                lViewModel.currentMode(lMode);
+                subscribeParameterValueChange(lMode);
+            }
+            
             var lMainContainer = document.getElementById("div-maincontainer");
-            ko.applyBindings(lViewModel, lMainContainer);
-            lHub.server.getCurrentModeName().done(function () {
+            
+            lHub.server.getCurrentModeName();
+            lGetCurrentModeNameDeferred.promise().done(function () {
+                ko.applyBindings(lViewModel, lMainContainer);
                 lViewModel.currentMode.subscribe(onCurrentModeChanged);
             });
         });
@@ -109,9 +125,13 @@
 
     function setCurrentMode(aModeName)
     {
+        
         var lCurrentMode = lViewModel.currentMode();
         if (lCurrentMode && lCurrentMode.name == aModeName)
+        {
+            lGetCurrentModeNameDeferred.resolve();
             return;
+        }
 
         for (var i = 0; i < lViewModel.supportedModes().length; ++i) {
             var lMode = lViewModel.supportedModes()[i];
@@ -121,6 +141,7 @@
                 break;
             }
         }
+        lGetCurrentModeNameDeferred.resolve();
     }
 
     function subscribeParameterValueChange(aModeView)
@@ -133,16 +154,22 @@
         for (var i = 0; i < lModeParametersView.length; ++i)
         {
             var lParam = lModeParametersView[i];
-            lViewModel.parametersubscriptions.push(lParam.value.subscribe(onParameterValueChanged));
+            lViewModel.parametersubscriptions.push(lParam.value.subscribe(onParameterValueChanged, lParam));
         }
     }
 
-    function onParameterValueChanged(aChange) {
-        console.log("Parameter value changed");
+    function onParameterValueChanged(aNewValue)
+    {
+        if(lViewModel.currentMode())
+        {
+            console.log("Parameter " + this.name + " in mode " + lViewModel.currentMode().name + " changed to " + aNewValue);
+            //lHub.server.SetParameterValue(lViewModel.currentMode().Name)
+        }
     }
 
     function setSupportedModes(aSupportedModes) {
         lViewModel.supportedModes(getSupportedModesView(aSupportedModes));
+        lGetSupportedModesDeferred.resolve();
     }
 
     function drawFFT(fftValues) {

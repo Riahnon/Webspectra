@@ -92,6 +92,11 @@ namespace WebSpectra.Hubs
             }
         }
 
+        public void SetParameterValue(string aModeName, object aValue)
+        {
+
+        }
+
         public void GetSupportedModes()
         {
             var lSupportedModes = _GetSupportedModes();
